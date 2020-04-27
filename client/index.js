@@ -1,8 +1,11 @@
-import Web3 from "web3";
-import Crud from "../build/contracts/Crud.json";
+// import Web3 from "web3";
+// import Crud from "../build/contracts/Crud.json";
 
-let web3;
-let crud;
+// let web3;
+// let crud;
+
+const Web3 = require("web3");
+const Crud = require("../build/contracts/Crud.json");
 
 const initWeb3 = () => {
   return new Promise((resolve, reject) => {
