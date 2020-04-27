@@ -7,7 +7,7 @@
   },
   "main": "truffle-config.js",
   "scripts": {
-    "start": "node ./client/index.js"
+    "start": "node client/index.js"
   },
   "directories": {
     "client": "client"
