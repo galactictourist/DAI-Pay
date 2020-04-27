@@ -2,14 +2,20 @@
   "name": "day5-crud",
   "version": "1.0.0",
   "description": "",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
+  "engines": {
+    "node": "10.x"
   },
-  "author": "",
-  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "directories": {},
+  "author": "Charles Voltron",
+  "license": "MIT",
   "devDependencies": {
     "truffle-hdwallet-provider": "^1.0.17",
+    "infura-web3-provider": "0.0.3",
+    "cors": "2.8.5",
     "web3": "^1.2.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
