@@ -5,9 +5,11 @@
   "engines": {
     "node": "10.x"
   },
-  "main": "./client/index.js",
+  "main": "truffle-config.js",
   "scripts": {
-    "start": "node ./client/index.js"
+    "start": "node client/index.js",
+    "dev": "node_modules/.bin/webpack && node client/index.js",
+    "webpack": "node_modules/.bin/webpack --watch"
   },
   "directories": {},
   "author": "Charles Voltron",
