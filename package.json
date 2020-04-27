@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "10.x"
+    "node": "8.11.1"
   },
   "main": "client/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "directories": {},
   "author": "Charles Voltron",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "truffle-hdwallet-provider": "^1.0.17",
     "infura-web3-provider": "0.0.3",
     "cors": "2.8.5",
