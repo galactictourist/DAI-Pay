@@ -5,7 +5,7 @@
   "engines": {
     "node": "10.x"
   },
-  "main": "index.js",
+  "main": "./client/index.js",
   "scripts": {
     "start": "node index.js"
   },
