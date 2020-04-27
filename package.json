@@ -5,11 +5,13 @@
   "engines": {
     "node": "8.11.1"
   },
-  "main": "client/index.js",
+  "main": "truffle-config.js",
   "scripts": {
-    "start": "node client/index.js"
+    "start": "npm run client"
   },
-  "directories": {},
+  "directories": {
+    "client": "client"
+  },
   "author": "Charles Voltron",
   "license": "MIT",
   "dependencies": {
