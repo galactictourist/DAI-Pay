@@ -5,9 +5,9 @@
   "engines": {
     "node": "10.x"
   },
-  "main": "/client/index.js",
+  "main": "./client/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node ./client/index.js"
   },
   "directories": {},
   "author": "Charles Voltron",
