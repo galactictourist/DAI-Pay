@@ -6,9 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "start": "webpack-dev-server"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
