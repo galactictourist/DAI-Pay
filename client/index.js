@@ -30,6 +30,7 @@ const initWeb3 = () => {
 
 const initContract = () => {
   const deploymentKey = Object.keys(Crud.networks)[0];
+  console.log("deploooo==>>>", deploymentKey);
   return new web3.eth.Contract(Crud.abi, Crud.networks[deploymentKey].address);
 };
 
@@ -51,8 +52,10 @@ const initApp = () => {
     accounts = _accounts;
   });
 
+  //********NEW USER CREATION  */
   $create.addEventListener("submit", (e) => {
     e.preventDefault();
+    console.log("window crud==>>", window.crud);
     const name = e.target.elements[0].value;
     crud.methods
       .create(name)
