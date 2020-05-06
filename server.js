@@ -35,8 +35,6 @@ const contract = new web3.eth.Contract(abi, contractAddress, {
   gasLimit: 3000000,
 });
 
-const contractFunction = contract.methods.create("Whammo"); // Here you can call your contract functions
-
 const functionAbi = contractFunction.encodeABI();
 
 let estimatedGas;
@@ -50,7 +48,7 @@ app.post("/api/pay", (req, res) => {
     name: req.body.name,
     address: req.body.address,
   };
-
+  const contractFunction = contract.methods.create(req.body.name); // Here you can call your contract functions
   contractFunction.estimateGas({ from: account }).then((gasAmount) => {
     estimatedGas = gasAmount.toString(16);
 
