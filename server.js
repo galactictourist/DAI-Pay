@@ -29,13 +29,13 @@ const privateKey = Buffer.from(
   "hex"
 );
 const contractAddress = "0xBd722D00Ea739b0F762CFA6c9E423457FEf0B4C7"; // Deployed manually
-const abi = Crud;
+const abi = Crud.abi;
 const contract = new web3.eth.Contract(abi, contractAddress, {
   from: account,
   gasLimit: 3000000,
 });
 
-const contractFunction = contract.methods.create("Carlos"); // Here you can call your contract functions
+const contractFunction = contract.methods.create("Whammo"); // Here you can call your contract functions
 
 const functionAbi = contractFunction.encodeABI();
 

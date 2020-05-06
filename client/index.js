@@ -29,9 +29,9 @@ const initWeb3 = () => {
 };
 
 const initContract = () => {
-  const deploymentKey = Object.keys(Crud.networks)[0];
+  const deploymentKey = "0xBd722D00Ea739b0F762CFA6c9E423457FEf0B4C7";
   console.log("deploooo==>>>", deploymentKey);
-  return new web3.eth.Contract(Crud.abi, Crud.networks[deploymentKey].address);
+  return new web3.eth.Contract(Crud.abi, deploymentKey);
 };
 
 const initApp = () => {
