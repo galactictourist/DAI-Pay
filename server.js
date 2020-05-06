@@ -13,6 +13,10 @@ const port = process.env.PORT || 3000;
 app.use(express.static(path.resolve(__dirname + "/public")));
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname + "/public/index.html"));
+});
+
 let web3 = new Web3(
   new Web3.providers.HttpProvider(
     "https://ropsten.infura.io/v3/21bd07309ba84caf8161c6c4bc26ed36"
