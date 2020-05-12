@@ -33,12 +33,13 @@ const contractAddress = "0xf97b7dCB9EEdb001466980B451Ab753EC6F7446C"; // Deploye
 const abi = Crud.abi;
 const contract = new web3.eth.Contract(abi, contractAddress, {
   from: account,
-  gasLimit: 3000000,
+  gasLimit: 4000000,
 });
 
 let estimatedGas;
 let nonce;
 
+console.log("contract address " + contract.options.address);
 console.log("Getting gas estimate");
 
 app.post("/api/pay", (req, res) => {
@@ -73,19 +74,22 @@ app.post("/api/pay", (req, res) => {
     payment.address,
     daiAmount
   );
+
   const functionAbi = contractFunction.encodeABI();
+
   contractFunction.estimateGas({ from: account }).then((gasAmount) => {
     estimatedGas = gasAmount.toString(16);
 
-    console.log("Estimated gas: " + estimatedGas);
+    //console.log("Estimated gas: " + estimatedGas);
 
     web3.eth.getTransactionCount(account).then((_nonce) => {
       nonce = _nonce.toString(16);
 
       console.log("Nonce: " + nonce);
+
       const txParams = {
-        gasPrice: 100000,
-        gasLimit: 3000000,
+        gasPrice: 300000,
+        gasLimit: 4000000,
         to: contractAddress,
         data: functionAbi,
         from: account,
