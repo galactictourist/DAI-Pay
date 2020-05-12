@@ -56,13 +56,17 @@ const initApp = () => {
   //********GET BALANCE  */
   $balance.addEventListener("submit", (e) => {
     e.preventDefault();
+    var spinner = document.querySelector(".loader");
+    spinner.style.visibility = "visible";
+    spinner.classList.add("spin");
 
     console.log(accounts[0]);
     crud.methods
       .getBalance()
-      .send({ from: "0x5cC377D9c84136E708C612b00a2617DF635f83ae" })
+      .call()
       .then((result) => {
-        console.log(result);
+        spinner.style.visibility = "hidden";
+        console.log("result = " + JSON.stringify(result));
         $getbalance.innerHTML = `$ ${result[0]} DAI `;
       })
       .catch(() => {
@@ -73,10 +77,11 @@ const initApp = () => {
   //********CHECK ADDRESS  */
   $checkaddress.addEventListener("submit", (e) => {
     e.preventDefault();
+    console.log(e.target.elements[0].value);
     const address = e.target.elements[0].value;
     crud.methods
       .isApproved(address)
-      .call()
+      .send({ from: "0x5cC377D9c84136E708C612b00a2617DF635f83ae" })
       .then((result) => {
         if (result[0] == true) {
           $addressresult.innerHTML = `Address is approved for payment`;

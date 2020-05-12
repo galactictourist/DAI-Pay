@@ -2,34 +2,41 @@
   <head>
     <title>Fascille Crypto Pay</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
     <script src="bundle.js"></script>
   </head>
   <body>
     <div class="container">
       <div class="row">
+        
         <div class="col-sm-12">
-          <h1>Fascille Crypto Pay</h1></br></br>
+          <h2>Fascille Crypto Pay</h2></br></br>
           <form id="balance">
            
-            
-            <button type="submit" class="btn btn-primary">Check Balance</button>
-            <p id="getbalance"></p>
-          </form>
+            <div class="row">
+              <div class="col-sm-4"><div class="loader"></div></div>
+              <div class="col-sm-4"><button type="submit" class="btn btn-primary">Check Balance</button></div>
+              <div class="col-sm-4"> <p id="getbalance"></p></div>
 
+            </div>
+            
+          </form>
+        
+        <div class="row" style="margin-top:50px;">
           <hr>
 
           <form id="checkaddress">
-            <h2>Check Approved Address</h2>
+            <h4>Check Approved Address</h4>
             <div class="form-group">
-              <label for="read-address">Wallet Address</label>
-              <input id="read-address" class="form-control"></input>
+              <label for="readaddress">Wallet Address</label>
+              <input id="readaddress" class="form-control"></input>
             </div>
             <button type="submit" class="btn btn-primary">Check Address</button>
             <p id="addressresult"></p>
           </form>
 
           <hr>
-
+        </div>
           <!-- <form id="edit">
             <h2>Check Treasury Balance</h2>
             <div class="form-group">
