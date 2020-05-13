@@ -18,10 +18,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname + "/public/index.html"));
 });
 
-let web3 = new Web3(
-  new Web3.providers.HttpProvider(
-    "https://ropsten.infura.io/v3/21bd07309ba84caf8161c6c4bc26ed36"
-  )
+const web3 = new Web3(
+  "https://ropsten.infura.io/v3/21bd07309ba84caf8161c6c4bc26ed36"
 );
 
 const account = "0x5cC377D9c84136E708C612b00a2617DF635f83ae"; //Your account address
@@ -72,33 +70,34 @@ app.post("/api/pay", (req, res) => {
   var daiAmount = libZ.addZeros(amountNoDec, totalDigits);
   console.log("dai amount - " + daiAmount);
 
-  
-  const functionAbi = contractFunction.encodeABI();
+  const functionAbi = contract.methods
+    .withdraw(payment.address, daiAmount)
+    .encodeABI();
 
   web3.eth.getTransactionCount(account, (err, txCount) => {
     // Build the transaction
     const txObject = {
-      nonce:    web3.utils.toHex(txCount),
-      to:       contractAddress,
-      value:    web3.utils.toHex(web3.utils.toWei('0.1', 'ether')),
-      gasLimit: web3.utils.toHex(21000),
-      gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
-      data: functionAbi
-    }
-  
+      nonce: web3.utils.toHex(txCount),
+      to: contractAddress,
+      value: web3.utils.toHex(web3.utils.toWei("0", "ether")),
+      gasLimit: web3.utils.toHex(2100000),
+      gasPrice: web3.utils.toHex(web3.utils.toWei("10", "gwei")),
+      data: functionAbi,
+    };
+
     // Sign the transaction
-    const tx = new Tx(txObject)
-    tx.sign(privateKey1)
-  
-    const serializedTx = tx.serialize()
-    const raw = '0x' + serializedTx.toString('hex')
-  
+    const tx = new Tx(txObject, { chain: "ropsten", hardfork: "istanbul" });
+    tx.sign(privateKey);
+
+    const serializedTx = tx.serialize();
+    const raw = "0x" + serializedTx.toString("hex");
+
     // Broadcast the transaction
     web3.eth.sendSignedTransaction(raw, (err, txHash) => {
-      console.log('txHash:', txHash)
-      // Now go check etherscan to see the transaction!
-    })
-  })
+      console.log("err", err);
+      console.log("txHash", txHash);
+    });
+  });
 
   // contractFunction.estimateGas({ from: account }).then((gasAmount) => {
   //   estimatedGas = gasAmount.toString(16);
