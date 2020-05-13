@@ -76,17 +76,17 @@ const initApp = () => {
     console.log("value" + e.target.elements[0].value);
     let address = e.target.elements[0].value;
     console.log(address);
+    $checkaddress.reset();
     if (!Web3.utils.isAddress(address)) {
+      $addressresult.innerHTML = `Not a valid wallet address`;
       throw new Error("Not a valid wallet address");
     }
     crud.methods
-      .isApproved(web3.utils.toHex(address))
-      .send({
-        from: web3.utils.toHex("0x5cC377D9c84136E708C612b00a2617DF635f83ae"),
-      })
+      .isApproved(address)
+      .call()
       .then((result) => {
         console.log("address response" + result);
-        if (result[0]) {
+        if (result) {
           $addressresult.innerHTML = `Address is approved for payment`;
         } else {
           $addressresult.innerHTML = `Address is not approved for payment`;
