@@ -1,11 +1,6 @@
-// import Web3 from "web3";
-// import Crud from "../build/contracts/Crud.json";
-
-// let web3;
-// let crud;
-
 const Web3 = require("web3");
-const Crud = require("../build/contracts/Treasury.json");
+const Contract = require("../build/contracts/Treasury.json");
+const libZ = require("../lib");
 
 const initWeb3 = () => {
   return new Promise((resolve, reject) => {
@@ -30,9 +25,8 @@ const initWeb3 = () => {
 
 const initContract = () => {
   const deploymentKey = "0xf97b7dCB9EEdb001466980B451Ab753EC6F7446C";
-
-  return new web3.eth.Contract(Crud.abi, deploymentKey);
   console.log("init contract", deploymentKey);
+  return new web3.eth.Contract(Contract.abi, deploymentKey);
 };
 
 const initApp = () => {
@@ -50,24 +44,26 @@ const initApp = () => {
 
   let accounts = [];
   web3.eth.getAccounts().then((_accounts) => {
+    console.log("accounts" + accounts[0]);
     accounts = _accounts;
   });
 
   //********GET BALANCE  */
   $balance.addEventListener("submit", (e) => {
     e.preventDefault();
-    var spinner = document.querySelector(".loader");
-    spinner.style.visibility = "visible";
-    spinner.classList.add("spin");
+    // var spinner = document.querySelector(".loader");
+    // spinner.style.visibility = "visible";
+    // spinner.classList.add("spin");
 
     console.log(accounts[0]);
     crud.methods
       .getBalance()
       .call()
       .then((result) => {
-        spinner.style.visibility = "hidden";
+        //spinner.style.visibility = "hidden";
         console.log("result = " + JSON.stringify(result));
-        $getbalance.innerHTML = `$ ${result[0]} DAI `;
+        var daiAmount = libZ.loseZeros(result);
+        $getbalance.innerHTML = `$ ${daiAmount} DAI `;
       })
       .catch(() => {
         $getbalance.innerHTML = `Error - ${e.message}`;
@@ -77,13 +73,20 @@ const initApp = () => {
   //********CHECK ADDRESS  */
   $checkaddress.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log(e.target.elements[0].value);
-    const address = e.target.elements[0].value;
+    console.log("value" + e.target.elements[0].value);
+    let address = e.target.elements[0].value;
+    console.log(address);
+    if (!Web3.utils.isAddress(address)) {
+      throw new Error("Not a valid wallet address");
+    }
     crud.methods
-      .isApproved(address)
-      .send({ from: "0x5cC377D9c84136E708C612b00a2617DF635f83ae" })
+      .isApproved(web3.utils.toHex(address))
+      .send({
+        from: web3.utils.toHex("0x5cC377D9c84136E708C612b00a2617DF635f83ae"),
+      })
       .then((result) => {
-        if (result[0] == true) {
+        console.log("address response" + result);
+        if (result[0]) {
           $addressresult.innerHTML = `Address is approved for payment`;
         } else {
           $addressresult.innerHTML = `Address is not approved for payment`;

@@ -30,11 +30,13 @@ const privateKey = Buffer.from(
   "hex"
 );
 const contractAddress = "0xf97b7dCB9EEdb001466980B451Ab753EC6F7446C"; // Deployed manually
+
 const abi = Crud.abi;
-const contract = new web3.eth.Contract(abi, contractAddress, {
-  from: account,
-  gasLimit: 4000000,
-});
+// const contract = new web3.eth.Contract(abi, contractAddress, {
+//   from: account,
+//   gasLimit: 4000000,
+// });
+const contract = new web3.eth.Contract(abi, contractAddress);
 
 let estimatedGas;
 let nonce;
@@ -70,44 +72,65 @@ app.post("/api/pay", (req, res) => {
   var daiAmount = libZ.addZeros(amountNoDec, totalDigits);
   console.log("dai amount - " + daiAmount);
 
-  const contractFunction = contract.methods.withdraw(
-    payment.address,
-    daiAmount
-  );
-
+  
   const functionAbi = contractFunction.encodeABI();
 
-  contractFunction.estimateGas({ from: account }).then((gasAmount) => {
-    estimatedGas = gasAmount.toString(16);
+  web3.eth.getTransactionCount(account, (err, txCount) => {
+    // Build the transaction
+    const txObject = {
+      nonce:    web3.utils.toHex(txCount),
+      to:       contractAddress,
+      value:    web3.utils.toHex(web3.utils.toWei('0.1', 'ether')),
+      gasLimit: web3.utils.toHex(21000),
+      gasPrice: web3.utils.toHex(web3.utils.toWei('10', 'gwei')),
+      data: functionAbi
+    }
+  
+    // Sign the transaction
+    const tx = new Tx(txObject)
+    tx.sign(privateKey1)
+  
+    const serializedTx = tx.serialize()
+    const raw = '0x' + serializedTx.toString('hex')
+  
+    // Broadcast the transaction
+    web3.eth.sendSignedTransaction(raw, (err, txHash) => {
+      console.log('txHash:', txHash)
+      // Now go check etherscan to see the transaction!
+    })
+  })
 
-    //console.log("Estimated gas: " + estimatedGas);
+  // contractFunction.estimateGas({ from: account }).then((gasAmount) => {
+  //   estimatedGas = gasAmount.toString(16);
 
-    web3.eth.getTransactionCount(account).then((_nonce) => {
-      nonce = _nonce.toString(16);
+  //   //console.log("Estimated gas: " + estimatedGas);
 
-      console.log("Nonce: " + nonce);
+  //   web3.eth.getTransactionCount(account).then((_nonce) => {
+  //     nonce = _nonce.toString(16);
 
-      const txParams = {
-        gasPrice: 300000,
-        gasLimit: 4000000,
-        to: contractAddress,
-        data: functionAbi,
-        from: account,
-        nonce: "0x" + nonce,
-      };
+  //     console.log("Nonce: " + nonce);
 
-      const tx = new Tx(txParams, { chain: "ropsten", hardfork: "petersburg" });
-      tx.sign(privateKey); // Transaction Signing here
+  //     const txParams = {
+  //       gasPrice: 300000,
+  //       gasLimit: 4000000,
+  //       to: contractAddress,
+  //       data: functionAbi,
+  //       from: account,
+  //       nonce: "0x" + nonce,
+  //     };
 
-      const serializedTx = tx.serialize();
+  //     const tx = new Tx(txParams, { chain: "ropsten", hardfork: "istanbul" });
+  //     tx.sign(privateKey); // Transaction Signing here
 
-      web3.eth
-        .sendSignedTransaction("0x" + serializedTx.toString("hex"))
-        .on("receipt", (receipt) => {
-          console.log(receipt);
-        });
-    });
-  });
+  //     const serializedTx = tx.serialize();
+
+  //     web3.eth
+  //       .sendSignedTransaction("0x" + serializedTx.toString("hex"))
+  //       .on("receipt", (receipt) => {
+  //         console.log(receipt);
+  //       });
+  //   });
+  // });
   res.send("got it");
 });
 
