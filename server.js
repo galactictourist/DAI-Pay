@@ -130,7 +130,7 @@ app.post("/api/pay", (req, res) => {
   //       });
   //   });
   // });
-  res.send("got it");
+  res.send(txHash);
 });
 
 app.listen(port, () => console.log(`Server started on ${port}`));

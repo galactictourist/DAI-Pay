@@ -49,32 +49,35 @@ const initApp = () => {
   // const $delete = document.getElementById("delete");
   // const $deleteResult = document.getElementById("delete-result");
 
-  let accounts = [];
-  web3.eth.getAccounts().then((_accounts) => {
-    console.log("accounts" + accounts[0]);
-    accounts = _accounts;
-  });
+  // let accounts = [];
+  // web3.eth.getAccounts().then((_accounts) => {
+  //   console.log("accounts" + accounts[0]);
+  //   accounts = _accounts;
+  // });
 
   //********GET BALANCE  */
   $balance.addEventListener("submit", (e) => {
-    e.preventDefault();
-    // var spinner = document.querySelector(".loader");
-    // spinner.style.visibility = "visible";
-    // spinner.classList.add("spin");
+    try {
+      e.preventDefault();
+      // var spinner = document.querySelector(".loader");
+      // spinner.style.visibility = "visible";
+      // spinner.classList.add("spin");
 
-    console.log(accounts[0]);
-    crud.methods
-      .getBalance()
-      .call()
-      .then((result) => {
-        //spinner.style.visibility = "hidden";
-        console.log("result = " + JSON.stringify(result));
-        var daiAmount = libZ.loseZeros(result);
-        $getbalance.innerHTML = `$ ${daiAmount} DAI `;
-      })
-      .catch(() => {
-        $getbalance.innerHTML = `Error - ${e.message}`;
-      });
+      crud.methods
+        .getBalance()
+        .call()
+        .then((result) => {
+          //spinner.style.visibility = "hidden";
+          console.log("result = " + JSON.stringify(result));
+          var daiAmount = libZ.loseZeros(result);
+          $getbalance.innerHTML = `$ ${daiAmount} DAI `;
+        })
+        .catch(() => {
+          $getbalance.innerHTML = `Error - ${e.message}`;
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
   });
 
   //********CHECK ADDRESS  */
