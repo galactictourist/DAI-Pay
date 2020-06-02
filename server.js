@@ -96,6 +96,7 @@ app.post("/api/pay", (req, res) => {
     web3.eth.sendSignedTransaction(raw, (err, txHash) => {
       console.log("err", err);
       console.log("txHash", txHash);
+      res.send(txHash);
     });
   });
 
@@ -130,7 +131,7 @@ app.post("/api/pay", (req, res) => {
   //       });
   //   });
   // });
-  res.send(txHash);
+  //res.send(txHash);
 });
 
 app.listen(port, () => console.log(`Server started on ${port}`));
