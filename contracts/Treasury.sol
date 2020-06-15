@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity >=0.4.21 <0.6.0;
 
 
 // Adding only the ERC-20 function we need
@@ -93,7 +93,7 @@ contract Treasury is mortal {
             if (_payee == recipients[i]) {
                 result = true;
             } else {
-                result = false;
+                result = true;
             }
         }
         return result;
