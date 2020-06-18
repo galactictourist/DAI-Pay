@@ -1,6 +1,5 @@
 pragma solidity >=0.4.21 <0.6.0;
 
-
 // Adding only the ERC-20 function we need
 interface DaiToken {
     function transfer(address dst, uint256 wad) external returns (bool);
@@ -8,14 +7,13 @@ interface DaiToken {
     function balanceOf(address guy) external view returns (uint256);
 }
 
-
 contract owned {
     DaiToken daitoken;
     address owner;
 
     constructor() public {
         owner = msg.sender;
-        daitoken = DaiToken(0x31F42841c2db5173425b5223809CF3A38FEde360);
+        daitoken = DaiToken(0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108);
     }
 
     modifier onlyOwner {
@@ -27,7 +25,6 @@ contract owned {
     }
 }
 
-
 contract mortal is owned {
     // Only owner can shutdown this contract.
     function destroy() public onlyOwner {
@@ -35,7 +32,6 @@ contract mortal is owned {
         selfdestruct(msg.sender);
     }
 }
-
 
 contract Treasury is mortal {
     //Control payment activity
@@ -91,8 +87,6 @@ contract Treasury is mortal {
         bool result;
         for (uint256 i = 0; i < recipients.length; i++) {
             if (_payee == recipients[i]) {
-                result = true;
-            } else {
                 result = true;
             }
         }

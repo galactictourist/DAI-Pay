@@ -31,7 +31,7 @@ const initWeb3 = () => {
 };
 
 const initContract = () => {
-  const deploymentKey = "0x90aD6D1C69e35ACb9491d1665CfF83C66D18c8EB";
+  const deploymentKey = "0xBdc13b765a8cF46496653368a74934C8c252F901";
   console.log("init contract", deploymentKey);
   return new web3.eth.Contract(Contract.abi, deploymentKey);
 };
