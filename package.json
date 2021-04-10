@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
+  "engines": {
+    "node": "15.8.0",
+    "npm": "7.5.4"
+  },
   "scripts": {
     "start": "node server.js",
     "build": "webpack -p",
