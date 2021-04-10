@@ -14,7 +14,7 @@ contract Owned {
 
     constructor() public {
         owner = msg.sender;
-        daitoken = DaiToken(0xf80A32A835F79D7787E8a8ee5721D0fEaFd78108);
+        daitoken = DaiToken(0xF7f78B7cC383134CD9cAE0BC565ef6851027499E);
     }
 
     modifier onlyOwner {
@@ -40,7 +40,7 @@ contract Treasury is Mortal {
     State public currentState;
 
     // Approve workers to be paid
-    mapping(address => bool) approved;
+    mapping (address => bool) approved;
 
     event Withdrawal(address indexed to, uint256 amount);
     event Deposit(address indexed from, uint256 amount);
@@ -50,7 +50,7 @@ contract Treasury is Mortal {
         currentState = State.ACTIVE;
     }
 
-    // Add approved payee
+    // Add approve payee
     function addRecipient(address payee) external onlyOwner {
         approved[payee] = true;
     }
@@ -88,15 +88,15 @@ contract Treasury is Mortal {
     function isApproved(address _payee) public view returns (bool) {
         return approved[_payee];
     }
-
+    
     // pause the contract
-    function pause() external onlyOwner {
+    function pause() external onlyOwner{
         currentState = State.PAUSED;
         emit StateChanged(currentState);
     }
-
+    
     // resume the contract
-    function resume() external onlyOwner {
+    function resume() external onlyOwner{
         currentState = State.ACTIVE;
         emit StateChanged(currentState);
     }

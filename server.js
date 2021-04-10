@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 });
 
 const web3 = new Web3(
-  "https://ropsten.infura.io/v3/cdbc44b21d2946168a0fd74c6736112f"
+  "https://rpc-mumbai.matic.today"
 );
 
 const account = "0x5cC377D9c84136E708C612b00a2617DF635f83ae"; //Your account address
