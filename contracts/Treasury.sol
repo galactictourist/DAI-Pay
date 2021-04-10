@@ -1,4 +1,5 @@
-pragma solidity >=0.4.21 <0.6.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity 0.6.12;
 
 // Adding only the ERC-20 function we need
 interface DaiToken {
@@ -7,7 +8,7 @@ interface DaiToken {
     function balanceOf(address guy) external view returns (uint256);
 }
 
-contract owned {
+contract Owned {
     DaiToken daitoken;
     address owner;
 
@@ -25,78 +26,85 @@ contract owned {
     }
 }
 
-contract mortal is owned {
+contract Mortal is Owned {
     // Only owner can shutdown this contract.
-    function destroy() public onlyOwner {
+    function destroy() external onlyOwner {
         daitoken.transfer(owner, daitoken.balanceOf(address(this)));
         selfdestruct(msg.sender);
     }
 }
 
-contract Treasury is mortal {
-    //Control payment activity
+contract Treasury is Mortal {
+    // Control payment activity
     enum State {ACTIVE, PAUSED}
     State public currentState;
 
-    //Approved workers to be paid
-    address payable[] public recipients;
+    // Approve workers to be paid
+    mapping(address => bool) approved;
 
     event Withdrawal(address indexed to, uint256 amount);
     event Deposit(address indexed from, uint256 amount);
+    event StateChanged(State state);
 
     constructor() public {
         currentState = State.ACTIVE;
     }
 
-    //Add approved payee
-    function addRecipient(address payable payee) public onlyOwner {
-        recipients.push(payee);
+    // Add approved payee
+    function addRecipient(address payee) external onlyOwner {
+        approved[payee] = true;
     }
 
     // Send DAI
     function withdraw(address payable _address, uint256 withdraw_amount)
-        public
+        external
         onlyOwner
-        inState(State.ACTIVE)
+        inState
     {
         require(
             daitoken.balanceOf(address(this)) >= withdraw_amount,
             "Insufficient balance in treasury for withdrawal request"
         );
 
-        //Send to approved addresses only
+        // Send to approved addresses only
         require(isApproved(_address), "Payee address is not approved");
 
         // Send the amount to the address that requested it
-        daitoken.transfer(_address, withdraw_amount);
         emit Withdrawal(_address, withdraw_amount);
+        daitoken.transfer(_address, withdraw_amount);
     }
 
-    //get DAI balance
-    function getBalance() public view returns (uint256) {
+    // get DAI balance
+    function getBalance() external view returns (uint256) {
         return daitoken.balanceOf(address(this));
     }
 
     // Accept any incoming amount
-    function() external payable {
+    receive() external payable {
         emit Deposit(msg.sender, msg.value);
     }
 
-    //Check if approved payee
+    // Check if approved payee
     function isApproved(address _payee) public view returns (bool) {
-        bool result;
-        for (uint256 i = 0; i < recipients.length; i++) {
-            if (_payee == recipients[i]) {
-                result = true;
-            }
-        }
-        return result;
+        return approved[_payee];
     }
 
-    //Check if contract paused or not (not implemented yet)
-    modifier inState(State state) {
+    // pause the contract
+    function pause() external onlyOwner {
+        currentState = State.PAUSED;
+        emit StateChanged(currentState);
+    }
+
+    // resume the contract
+    function resume() external onlyOwner {
+        currentState = State.ACTIVE;
+        emit StateChanged(currentState);
+    }
+
+    // Check if contract paused or not
+    modifier inState() {
         require(
-            currentState == state,
+            currentState == State.ACTIVE,
             "Current state does not support this operation"
         );
         _;
