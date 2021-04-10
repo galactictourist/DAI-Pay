@@ -59,16 +59,7 @@ app.post("/api/pay", (req, res) => {
   //Amount processing
   var amount = payment.amount;
   console.log("raw amount - " + amount);
-  var str = String(amount);
-
-  var amountNoDec = str.replace(/[^0-9|-]/g, "");
-  console.log("no dec amount - " + amountNoDec);
-  var decLeft = amount.toString().indexOf(".");
-
-  var totalDigits = decLeft + 18;
-
-  var daiAmount = libZ.addZeros(amountNoDec, totalDigits);
-  console.log("dai amount - " + daiAmount);
+  let daiAmount = Web3.utils.toWei(amount.toString());
 
   const functionAbi = contract.methods
     .withdraw(payment.address, daiAmount)
