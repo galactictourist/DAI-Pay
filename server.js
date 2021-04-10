@@ -2,8 +2,6 @@
 const Tx = require("ethereumjs-tx");
 const Web3 = require("web3");
 const Crud = require("./build/contracts/Treasury.json");
-const cjson = require("cjson");
-const libZ = require("./lib");
 
 //Server
 const express = require("express");
