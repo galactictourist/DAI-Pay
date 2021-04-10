@@ -27,7 +27,7 @@ const privateKey = Buffer.from(
   "3c90126762f743ef8eadf39cd65da5b6c044b46239cf2d4806f039aa31c14be1",
   "hex"
 );
-const contractAddress = "0xBdc13b765a8cF46496653368a74934C8c252F901"; // Deployed manually
+const contractAddress = "0x0f8e54c8BDcBC72E93678003e810258724EB667E"; // Deployed manually
 
 const abi = Crud.abi;
 // const contract = new web3.eth.Contract(abi, contractAddress, {
