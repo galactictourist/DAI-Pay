@@ -1,6 +1,7 @@
 const Web3 = require("web3");
 const Contract = require("../build/contracts/Treasury.json");
 const libZ = require("../lib");
+const owner = "0x5cC377D9c84136E708C612b00a2617DF635f83ae";
 
 const initWeb3 = () => {
   return new Promise((resolve, reject) => {
@@ -22,7 +23,7 @@ const initWeb3 = () => {
 
     //*****Test Code - REMOVE */
 
-    return resolve(new Web3(window.web3.currentProvider));
+    return resolve(window.web3.currentProvider);
 
     //****END TEST CODE */
 
@@ -42,6 +43,12 @@ const initApp = () => {
 
   const $checkaddress = document.getElementById("checkaddress");
   const $addressresult = document.getElementById("addressresult");
+
+  const $connectweb3 = document.getElementById("connectweb3");
+  const $walletaddress = document.getElementById("walletaddress");
+
+  const $addRecipient = document.getElementById("addRecipient");
+  const $addRecipientResult = document.getElementById("addRecipientResult");
 
   // const $edit = document.getElementById("edit");
   // const $editResult = document.getElementById("edit-result");
@@ -107,6 +114,48 @@ const initApp = () => {
       });
   });
 
+  $connectweb3.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      await provider.enable();
+      window.accounts = await web3.eth.getAccounts()
+
+      if (accounts[0] != owner) {
+        throw new Error("connected wallet is not admin");
+      }
+      $walletaddress.innerHTML = `${accounts[0]}`
+    } catch (error) {
+      $walletaddress.innerHTML = `${error.message}`
+    }
+
+  })
+
+  $addRecipient.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    try {
+      let address = e.target.elements[1].value;
+      console.log(address)
+
+      if (!Web3.utils.isAddress(address)) {
+        $addressresult.innerHTML = `Not a valid wallet address`;
+        throw new Error("Not a valid wallet address");
+      }
+
+      const response = await crud.methods.addRecipient(address).send({
+        from: accounts[0]
+      })
+      .on("transactionHash", () => { $addRecipientResult.innerHTML = "Transaction sent! waiting for confirmation..." })
+      .on("confirmation", () => { $addRecipientResult.innerHTML = "Success!" })
+      .on("error", (e) => { throw new Error(error.message) })
+
+
+      $addRecipient.reset();
+    } catch (error) {
+      $addRecipientResult.innerHTML = `${error.message}`
+    }
+  });
+
   // $edit.addEventListener("submit", (e) => {
   //   e.preventDefault();
   //   const id = e.target.elements[0].value;
@@ -139,8 +188,10 @@ const initApp = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   initWeb3()
-    .then((_web3) => {
-      web3 = _web3;
+    .then((_provider) => {
+      window.provider = _provider;
+      window.web3 = new Web3(_provider);
+      console.log(web3)
       crud = initContract();
       initApp();
       console.log(crud.options.address);

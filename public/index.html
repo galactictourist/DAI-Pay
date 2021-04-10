@@ -1,61 +1,91 @@
 <html>
-  <head>
-    <title>Fascille Crypto Pay</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="main.css">
-    <script src="bundle.js"></script>
-  </head>
-  <body>
-    <div class="container-fluid ">
-      <div class="row" style="background-color:#383FEB;">
-        <div class="col-lg-12"></div>
-          <img src="img/fas-logo.png" class="responsive">
-        </div>
+
+<head>
+  <title>Fascille Crypto Pay</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <link rel="stylesheet" href="main.css">
+  <script src="bundle.js"></script>
+</head>
+
+<body>
+  <div class="container-fluid ">
+    <div class="row" style="background-color:#383FEB;">
+      <div class="col-lg-12"></div>
+      <img src="img/fas-logo.png" class="responsive">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col px-5">
+      <div class="float-right">Cryptocurrency Payment Platform / Alpha 1.0</div>
+    </div>
+  </div>
+
+  <form id="balance">
+
+    <div class="row px-5" style="margin-top:50px;">
+
+      <div class="col-md-2">
+        <button type="submit" class="btn-sm btn-outline-primary">Check Balance</button>
       </div>
-       
-      <div class="row">
-            <div class="col px-5">
-              <div class="float-right">Cryptocurrency Payment Platform / Alpha 1.0</div>
-            </div>
+
+      <div class="col-md">
+        <div class="float-left"></div><strong>
+          <p id="getbalance"></p>
+        </strong>
       </div>
-      
-          <form id="balance">
-            <div class="row px-5" style="margin-top:50px;">
-                <div class="col-md-2">
-                <button type="submit" class="btn-sm btn-outline-primary">Check Balance</button>
-              </div>
-              <div class="col-md">
-                <div class="float-left"></div><strong><p id="getbalance"></p></strong></div>
-              </div>
-             </div>
-           
-           
-          </form>
 
-     
-        
-        
-      <div class="row px-5" style="margin-top:50px;">
-         
+    </div>
 
-          <form id="checkaddress">
-            <div class="col-md-12">
-              <h5>Check Address</h5>
-              <div class="form-group">
-                
-                <input id="readaddress" placeholder="Wallet Address" class="form-control"></input>
-              </div>
-              <button type="submit" class="btn-sm btn-outline-primary">Check</button>
-            </br></br>
-              <p id="addressresult"></p>
-            </div>
-           
-          </form>
+  </form>
 
-          
-        </div>
+
+  <div class="row px-5" style="margin-top:50px;">
+
+    <form id="checkaddress">
+      <div class="col-md-12">
+        <h5>Check Address</h5>
+        <div class="form-group">
+
+          <input id="readaddress" placeholder="Wallet Address" class="form-control"></input>
 
         </div>
-      
-  </body>
+
+        <button type="submit" class="btn-sm btn-outline-primary">Check</button>
+
+        </br></br>
+        <p id="addressresult"></p>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="row px-5" style="margin-top:50px;">
+
+    <form id="addRecipient">
+      <div class="col-md-12">
+        <h5>Add Recipient (Only Admin)</h5>
+        <div class="form-group">
+
+          <button class="btn-sm btn-outline-primary" id="connectweb3" >Connect To Web3</button>
+          </br></br>
+          <p id="walletaddress"></p>
+
+          <input id="recipientField" placeholder="Recipient Address" class="form-control"></input>
+
+        </div>
+
+        <button type="submit" class="btn-sm btn-outline-primary">Add</button>
+        </br></br>
+        <p id="addRecipientResult"></p>
+      </div>
+
+    </form>
+
+  </div>
+
+</body>
+
 </html>
