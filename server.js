@@ -1,5 +1,5 @@
 //Blockchain
-const Tx = require("ethereumjs-tx").Transaction;
+const Tx = require("ethereumjs-tx");
 const Web3 = require("web3");
 const Crud = require("./build/contracts/Treasury.json");
 const cjson = require("cjson");
@@ -86,11 +86,13 @@ app.post("/api/pay", (req, res) => {
     };
 
     // Sign the transaction
-    const tx = new Tx(txObject, { chain: "ropsten", hardfork: "istanbul" });
+    const tx = new Tx(txObject);
     tx.sign(privateKey);
 
     const serializedTx = tx.serialize();
     const raw = "0x" + serializedTx.toString("hex");
+
+    console.log(raw)
 
     // Broadcast the transaction
     web3.eth.sendSignedTransaction(raw, (err, txHash) => {
